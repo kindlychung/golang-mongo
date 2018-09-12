@@ -6,7 +6,9 @@ import (
 	// Standard library packages
 
 	// Third party packages
+	"fmt"
 	"os"
+	"strings"
 
 	"github.com/Sri600/golang-mongo/controllers"
 	"github.com/gin-gonic/gin"
@@ -32,9 +34,11 @@ func main() {
 // getSession creates a new mongo session and panics if connection error occurs
 func getSession() *mgo.Session {
 	// Connect to our local mongo
-	mongoURL := os.Getenv("MONGODB_URI")
+	mongoURL := strings.Replace(os.Getenv("MONGO_PORT"), "tcp", "mongodb", 1)
 	if mongoURL == "" {
-		panic("MONGODB_URI env var not set.")
+		panic("MONGO_PORT env var not set.")
+	} else {
+		fmt.Printf("MONGO_PORT: %s", mongoURL)
 	}
 	s, err := mgo.Dial(mongoURL)
 
